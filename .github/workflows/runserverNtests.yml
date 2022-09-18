@@ -26,7 +26,7 @@ jobs:
         run: mkdir -p testResults
 
       - name: run docker container
-        run: docker build -t local Dockerfile
+        run: docker build -t local ./Dockerfile
       - name: run 
         run: docker run -p 3000:3000 local
 
