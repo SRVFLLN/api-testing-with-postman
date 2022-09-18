@@ -6,4 +6,3 @@ RUN apk add git
 RUN git clone https://github.com/WannaBeDream/Postman-newman-ghActions /usr/app/Postman-newman-ghActions
 RUN cd /usr/app/Postman-newman-ghActions
 RUN npm i
-CMD npm run term-on-api
