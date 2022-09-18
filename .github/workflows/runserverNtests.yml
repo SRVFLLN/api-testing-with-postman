@@ -27,8 +27,6 @@ jobs:
 
       - name: run docker container
         run: docker build -t local .
-      - name: run 
-        run: docker run -p 3000:3000 local
 
       - name: Run POSTMAN collection
         run: |
