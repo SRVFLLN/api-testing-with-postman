@@ -13,20 +13,17 @@ jobs:
         with:
           node-version: "12.x"
 
-
-      # Install the newman command line utility and also install the html extra reporter
       - name: Install newman
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
-
-      # Make directory to upload the test results
       - name: Make Directory for results
         run: mkdir -p testResults
 
       - name: Create docker image
         run: docker build -t local .
+        
       - name: Run container
         run: docker run -p 3000:3000 -d local npm run tern-on-api
 
@@ -34,11 +31,16 @@ jobs:
         run: |
           newman run store.postman_collection.json -d data.csv -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
 
-
-      # Upload the contents of Test Results directory to workspace
-      - name: Output the run Details
+      - name: Rename files
         if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: RunReports
-          path: testResults
+        run: mv testResults/htmlreport.html testResults/index.html
+
+      - name: Push
+        if: always()
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: reports
+          FOLDER: testResults 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          MESSAGE: "Added local server test reports"
