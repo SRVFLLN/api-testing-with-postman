@@ -44,6 +44,10 @@ jobs:
           name: RunReports
           path: testResults
 
+      - name: Rename files
+        if: always()
+        run: mv testResults/htmlreport.html testResults/index.html
+
       - name: Push
         if: always()
         uses: s0/git-publish-subdir-action@develop
